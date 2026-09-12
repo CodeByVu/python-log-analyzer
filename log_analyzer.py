@@ -5,17 +5,20 @@ debug_count = 0
 
 with open('app.log') as file:
     for line in file:
-        if 'INFO' in line:
+        log_level = line.split()[0]
+
+        if log_level == 'INFO':
             info_count += 1
             
-        if 'WARNING' in line:
+        if log_level == 'WARNING':
             warning_count += 1
 
-        if 'ERROR' in line:
+        if log_level == 'ERROR':
             error_count += 1
 
-        if 'DEBUG' in line:
+        if log_level == 'DEBUG':
             debug_count += 1
+
 
 total_count = info_count + warning_count + error_count + debug_count
 
@@ -36,9 +39,4 @@ else:
     print(f'ERROR PCT: {error_percentage}%')
     debug_percentage = debug_count / total_count * 100
     print(f'DEBUG PCT: {debug_percentage}%')
-
-
-
-
-
 
