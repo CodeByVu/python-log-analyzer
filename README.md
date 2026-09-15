@@ -15,12 +15,16 @@ This project is being built incrementally as a hands-on Python and IT learning p
 
 ## 💻 Current Usage
 
-The program currently analyzes a file named `app.log`.
+The program accepts the log filename as a command-line argument.
 
 Run it with:
 
 ```bash
-python log_analyzer.py
+python log_analyzer.py app.log
+
+You can also analyze a different log file:
+
+python log_analyzer.py test.log
 ```
 
 ### Example Output
@@ -45,10 +49,11 @@ The project is still under development.
 
 At the moment:
 
-* The input file is hard-coded as `app.log`
+* The analyzer requires a log filename to be provided as a command-line argument
 * The analyzer expects the log level to be the first word on each line
 * Only the log levels `INFO`, `WARNING`, `ERROR`, and `DEBUG` are recognized automatically
 * Other log levels are categorized as `UNKNOWN`
+* Missing or invalid files are not yet handled gracefully
 
 These limitations will be addressed as the project develops.
 
@@ -64,7 +69,6 @@ These limitations will be addressed as the project develops.
 
 Future development may include:
 
-* Allowing users to provide their own log filename
 * Handling missing or invalid files
 * Supporting additional log formats
 * More detailed statistics and summaries
@@ -90,6 +94,7 @@ Concepts currently practiced include:
 * f-strings
 * Basic error handling and debugging
 * Git version control
+* Command-line arguments with `sys.argv`
 
 > [!NOTE]
 > This is an evolving learning project. Features are added incrementally with an emphasis on understanding the code and development process rather than simply producing a finished application.
@@ -98,4 +103,6 @@ Concepts currently practiced include:
 
 🚧 **Actively developing**
 
-The next major improvement is allowing the user to specify which log file the analyzer should process instead of always using `app.log`.
+The analyzer can now accept a log filename from the command line, making it possible to analyze different log files without changing the Python source code.
+
+The next major improvement is handling missing or invalid filenames more gracefully.
