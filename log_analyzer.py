@@ -1,10 +1,13 @@
+import sys
+
+log_filename = sys.argv[1]
 info_count = 0
 warning_count = 0
 error_count = 0 
 debug_count = 0
 unknown_count = 0
 
-with open('app.log') as file:
+with open(log_filename) as file:
     for line in file:
         log_level = line.split()[0]
 
