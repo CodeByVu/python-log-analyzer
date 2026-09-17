@@ -1,6 +1,11 @@
 import sys
 
-log_filename = sys.argv[1]
+if len(sys.argv) >= 2:
+    log_filename = sys.argv[1]
+else:
+    print('Log file not detected, please provide one')
+    sys.exit()
+
 info_count = 0
 warning_count = 0
 error_count = 0 
