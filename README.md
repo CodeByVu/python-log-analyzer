@@ -26,6 +26,7 @@ You can also analyze a different log file:
 
 python log_analyzer.py test.log
 ```
+If no log filename is provided, the program displays an error message and exits.
 
 ### Example Output
 
@@ -49,7 +50,6 @@ The project is still under development.
 
 At the moment:
 
-* The analyzer requires a log filename to be provided as a command-line argument
 * The analyzer expects the log level to be the first word on each line
 * Only the log levels `INFO`, `WARNING`, `ERROR`, and `DEBUG` are recognized automatically
 * Other log levels are categorized as `UNKNOWN`
@@ -103,6 +103,6 @@ Concepts currently practiced include:
 
 🚧 **Actively developing**
 
-The analyzer can now accept a log filename from the command line, making it possible to analyze different log files without changing the Python source code.
+The analyzer now accepts a log filename from the command line and handles cases where the user does not provide one.
 
 The next major improvement is handling missing or invalid filenames more gracefully.
