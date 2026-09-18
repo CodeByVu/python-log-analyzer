@@ -12,20 +12,33 @@ This project is being built incrementally as a hands-on Python and IT learning p
 * Calculates the percentage of entries in each category
 * Reports the total number of entries analyzed
 * Reads the log file line by line using Python file handling
+* Accepts an optional keyword as a command-line argument
+* Counts how many lines contain the supplied keyword
 
 ## 💻 Current Usage
 
-The program accepts the log filename as a command-line argument.
+The program accepts the log filename as a required command-line argument and an optional keyword for searching.
 
-Run it with:
+Run it with a log file only:
 
 ```bash
 python log_analyzer.py app.log
+```
 
-You can also analyze a different log file:
+You can also search the log for a keyword:
 
+```bash
+python log_analyzer.py app.log database
+```
+
+The keyword search counts how many lines contain the supplied keyword.
+
+You can analyze a different log file:
+
+```bash
 python log_analyzer.py test.log
 ```
+
 If no log filename is provided, the program displays an error message and exits.
 
 ### Example Output
@@ -43,6 +56,9 @@ ERROR PCT: 30.0%
 DEBUG PCT: 10.0%
 UNKNOWN PCT: 10.0%
 ```
+When a keyword is provided, the analyzer also reports the number of matching lines:
+
+KEYWORD MATCHES: 3
 
 ## 🚧 Current Limitations
 
@@ -54,6 +70,7 @@ At the moment:
 * Only the log levels `INFO`, `WARNING`, `ERROR`, and `DEBUG` are recognized automatically
 * Other log levels are categorized as `UNKNOWN`
 * Missing or invalid files are not yet handled gracefully
+* Keyword searches currently report the number of matching lines but do not display the matching lines
 
 These limitations will be addressed as the project develops.
 
@@ -95,6 +112,7 @@ Concepts currently practiced include:
 * Basic error handling and debugging
 * Git version control
 * Command-line arguments with `sys.argv`
+* `None` and optional values
 
 > [!NOTE]
 > This is an evolving learning project. Features are added incrementally with an emphasis on understanding the code and development process rather than simply producing a finished application.
@@ -103,6 +121,6 @@ Concepts currently practiced include:
 
 🚧 **Actively developing**
 
-The analyzer now accepts a log filename from the command line and handles cases where the user does not provide one.
+The analyzer now accepts a log filename from the command line and optionally accepts a keyword to search for. It counts the number of lines containing the supplied keyword while continuing to perform the original log-level analysis.
 
-The next major improvement is handling missing or invalid filenames more gracefully.
+The next improvement is displaying the actual lines that match a supplied keyword.
