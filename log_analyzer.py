@@ -6,16 +6,26 @@ else:
     print('Log file not detected, please provide one')
     sys.exit()
 
+if len(sys.argv) >= 3:
+    keyword = sys.argv[2]
+else:
+    keyword = None
+
 info_count = 0
 warning_count = 0
 error_count = 0 
 debug_count = 0
 unknown_count = 0
+keyword_count = 0
 
 with open(log_filename) as file:
     for line in file:
         log_level = line.split()[0]
 
+        if keyword is not None:
+            if keyword in line:
+              keyword_count += 1  
+            
         if log_level == 'INFO':
             info_count += 1
 
@@ -33,6 +43,7 @@ with open(log_filename) as file:
 
 total_count = info_count + warning_count + error_count + debug_count + unknown_count
 
+print(f'KEYWORD MATCHES: {keyword_count}')
 print(f'INFO: {info_count}')
 print(f'WARNING: {warning_count}')
 print(f'ERROR: {error_count}')
