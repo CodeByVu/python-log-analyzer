@@ -10,6 +10,7 @@ if len(sys.argv) >= 3:
     keyword = sys.argv[2]
 else:
     keyword = None
+    print('No keyword provided. Skipping keyword search.')
 
 info_count = 0
 warning_count = 0
@@ -20,11 +21,17 @@ keyword_count = 0
 
 with open(log_filename) as file:
     for line in file:
+        line = line.strip()
+        if line == '':
+            continue
+
         log_level = line.split()[0]
 
         if keyword is not None:
             if keyword in line:
               keyword_count += 1  
+              print(f'MATCH #{keyword_count}:\n{line}')
+              
             
         if log_level == 'INFO':
             info_count += 1
