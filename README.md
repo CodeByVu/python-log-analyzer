@@ -12,8 +12,11 @@ This project is being built incrementally as a hands-on Python and IT learning p
 * Calculates the percentage of entries in each category
 * Reports the total number of entries analyzed
 * Reads the log file line by line using Python file handling
+* Skips blank lines during analysis
 * Accepts an optional keyword as a command-line argument
-* Counts how many lines contain the supplied keyword
+* Searches each line for the supplied keyword
+* Displays and numbers matching lines
+* Reports the total number of keyword matches
 
 ## 💻 Current Usage
 
@@ -26,20 +29,20 @@ python log_analyzer.py app.log
 ```
 
 You can also search the log for a keyword:
-
 ```bash
 python log_analyzer.py app.log database
 ```
 
-The keyword search counts how many lines contain the supplied keyword.
+The keyword search displays each matching line and reports the total number of matching lines.
 
 You can analyze a different log file:
-
 ```bash
 python log_analyzer.py test.log
 ```
 
 If no log filename is provided, the program displays an error message and exits.
+
+If no keyword is provided, the program skips the keyword search and continues with the normal log analysis.
 
 ### Example Output
 
@@ -56,9 +59,21 @@ ERROR PCT: 30.0%
 DEBUG PCT: 10.0%
 UNKNOWN PCT: 10.0%
 ```
-When a keyword is provided, the analyzer also reports the number of matching lines:
+When a keyword is provided and matches are found:
 
-KEYWORD MATCHES: 3
+```text
+MATCH #1:
+Database connection failed
+
+MATCH #2:
+Database response time exceeded
+
+KEYWORD MATCHES: 2
+
+When a keyword is provided but no matches are found:
+
+KEYWORD MATCHES: 0
+```
 
 ## 🚧 Current Limitations
 
@@ -70,7 +85,7 @@ At the moment:
 * Only the log levels `INFO`, `WARNING`, `ERROR`, and `DEBUG` are recognized automatically
 * Other log levels are categorized as `UNKNOWN`
 * Missing or invalid files are not yet handled gracefully
-* Keyword searches currently report the number of matching lines but do not display the matching lines
+* Keyword searches currently use a simple substring search, so the keyword can match part of a larger word
 
 These limitations will be addressed as the project develops.
 
@@ -103,6 +118,7 @@ Concepts currently practiced include:
 * Variables
 * Conditional statements
 * `if` / `elif` / `else`
+* Nested `if` statements
 * `for` loops
 * String methods
 * Lists and indexing
@@ -121,6 +137,6 @@ Concepts currently practiced include:
 
 🚧 **Actively developing**
 
-The analyzer now accepts a log filename from the command line and optionally accepts a keyword to search for. It counts the number of lines containing the supplied keyword while continuing to perform the original log-level analysis.
+The analyzer accepts a log filename from the command line and optionally accepts a keyword to search for. It performs the original log-level analysis while also displaying and counting lines that contain the supplied keyword.
 
-The next improvement is displaying the actual lines that match a supplied keyword.
+The next improvement is handling missing or invalid file paths more gracefully.
