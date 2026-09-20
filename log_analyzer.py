@@ -31,8 +31,7 @@ with open(log_filename) as file:
             if keyword in line:
               keyword_count += 1  
               print(f'MATCH #{keyword_count}:\n{line}')
-              
-            
+                    
         if log_level == 'INFO':
             info_count += 1
 
