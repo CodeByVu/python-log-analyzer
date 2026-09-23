@@ -18,6 +18,13 @@ debug_count = 0
 unknown_count = 0
 keyword_count = 0
 
+def get_log_level(line):
+    log_level = line.split()[0]
+    return log_level
+
+def keyword_matches(line, keyword):
+    return keyword in line
+
 try:
     with open(log_filename) as file:
         if keyword is None:
@@ -28,10 +35,10 @@ try:
             if line == '':
                 continue
 
-            log_level = line.split()[0]
+            log_level = get_log_level(line)
 
             if keyword is not None:
-                if keyword in line:
+                if keyword_matches(line, keyword):
                     keyword_count += 1
                     print(f'MATCH #{keyword_count}:\n{line}')
 
