@@ -1,22 +1,5 @@
 import sys
 
-if len(sys.argv) >= 2:
-    log_filename = sys.argv[1]
-else:
-    print('Log file not detected, please provide one')
-    sys.exit()
-
-if len(sys.argv) >= 3:
-    keyword = sys.argv[2]
-else:
-    keyword = None
-
-info_count = 0
-warning_count = 0
-error_count = 0
-debug_count = 0
-unknown_count = 0
-keyword_count = 0
 
 def get_log_level(line):
     log_level = line.split()[0]
@@ -25,62 +8,85 @@ def get_log_level(line):
 def keyword_matches(line, keyword):
     return keyword in line
 
-try:
-    with open(log_filename) as file:
-        if keyword is None:
-            print('No keyword provided. Skipping keyword search.')
+def main():
 
-        for line in file:
-            line = line.strip()
-            if line == '':
-                continue
+    if len(sys.argv) >= 2:
+        log_filename = sys.argv[1]
+    else:
+        print('Log file not detected, please provide one')
+        sys.exit()
 
-            log_level = get_log_level(line)
+    if len(sys.argv) >= 3:
+        keyword = sys.argv[2]
+    else:
+        keyword = None
 
-            if keyword is not None:
-                if keyword_matches(line, keyword):
-                    keyword_count += 1
-                    print(f'MATCH #{keyword_count}:\n{line}')
+    info_count = 0
+    warning_count = 0
+    error_count = 0
+    debug_count = 0
+    unknown_count = 0
+    keyword_count = 0
 
-            if log_level == 'INFO':
-                info_count += 1
+    try:
+        with open(log_filename) as file:
+            if keyword is None:
+                print('No keyword provided. Skipping keyword search.')
 
-            elif log_level == 'WARNING':
-                warning_count += 1
+            for line in file:
+                line = line.strip()
+                if line == '':
+                    continue
 
-            elif log_level == 'ERROR':
-                error_count += 1
+                log_level = get_log_level(line)
 
-            elif log_level == 'DEBUG':
-                debug_count += 1
+                if keyword is not None:
+                    if keyword_matches(line, keyword):
+                        keyword_count += 1
+                        print(f'MATCH #{keyword_count}:\n{line}')
 
-            else:
-                unknown_count += 1
+                if log_level == 'INFO':
+                    info_count += 1
 
-except FileNotFoundError:
-    print('File not found')
-    sys.exit()
+                elif log_level == 'WARNING':
+                    warning_count += 1
 
-total_count = info_count + warning_count + error_count + debug_count + unknown_count
+                elif log_level == 'ERROR':
+                    error_count += 1
 
-print(f'KEYWORD MATCHES: {keyword_count}')
-print(f'INFO: {info_count}')
-print(f'WARNING: {warning_count}')
-print(f'ERROR: {error_count}')
-print(f'DEBUG: {debug_count}')
-print(f'UNKNOWN: {unknown_count}')
-print(f'TOTAL: {total_count}')
+                elif log_level == 'DEBUG':
+                    debug_count += 1
 
-if total_count == 0:
+                else:
+                    unknown_count += 1
+
+    except FileNotFoundError:
+        print('File not found')
+        sys.exit()
+
+    total_count = info_count + warning_count + error_count + debug_count + unknown_count
+
+    print(f'KEYWORD MATCHES: {keyword_count}')
+    print(f'INFO: {info_count}')
+    print(f'WARNING: {warning_count}')
+    print(f'ERROR: {error_count}')
+    print(f'DEBUG: {debug_count}')
+    print(f'UNKNOWN: {unknown_count}')
     print(f'TOTAL: {total_count}')
-else:
-    info_percentage = info_count / total_count * 100
-    print(f'INFO PCT: {info_percentage}%')
-    warning_percentage = warning_count / total_count * 100
-    print(f'WARNING PCT: {warning_percentage}%')
-    error_percentage = error_count / total_count * 100
-    print(f'ERROR PCT: {error_percentage}%')
-    debug_percentage = debug_count / total_count * 100
-    print(f'DEBUG PCT: {debug_percentage}%')
-    unknown_percentage = unknown_count / total_count * 100
-    print(f'UNKNOWN PCT: {unknown_percentage}%')
+
+    if total_count == 0:
+        print(f'TOTAL: {total_count}')
+    else:
+        info_percentage = info_count / total_count * 100
+        print(f'INFO PCT: {info_percentage}%')
+        warning_percentage = warning_count / total_count * 100
+        print(f'WARNING PCT: {warning_percentage}%')
+        error_percentage = error_count / total_count * 100
+        print(f'ERROR PCT: {error_percentage}%')
+        debug_percentage = debug_count / total_count * 100
+        print(f'DEBUG PCT: {debug_percentage}%')
+        unknown_percentage = unknown_count / total_count * 100
+        print(f'UNKNOWN PCT: {unknown_percentage}%')
+
+if __name__ == '__main__':
+    main()
