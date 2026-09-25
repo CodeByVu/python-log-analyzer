@@ -1,8 +1,14 @@
 from log_analyzer import get_log_level, keyword_matches
+import pytest
+
 
 def test_get_log_level():
     result = get_log_level('ERROR Database connection failed') 
     assert result == 'ERROR'
+
+def test_get_log_level_empty_line():
+    with pytest.raises(IndexError):
+        get_log_level('')
 
 def test_get_log_level_unknown():
     result = get_log_level('In a universe of probabilities, reality is just a choice of observation.')

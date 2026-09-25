@@ -74,9 +74,7 @@ def main():
     print(f'UNKNOWN: {unknown_count}')
     print(f'TOTAL: {total_count}')
 
-    if total_count == 0:
-        print(f'TOTAL: {total_count}')
-    else:
+    if total_count != 0:
         info_percentage = info_count / total_count * 100
         print(f'INFO PCT: {info_percentage}%')
         warning_percentage = warning_count / total_count * 100
