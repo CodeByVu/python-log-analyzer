@@ -6,7 +6,7 @@ def get_log_level(line):
     return log_level
 
 def keyword_matches(line, keyword):
-    return keyword in line
+    return keyword.lower() in line.lower()
 
 def main():
 

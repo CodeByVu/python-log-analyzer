@@ -21,3 +21,15 @@ def test_keyword_matches_true():
 def test_keyword_matches_false():
     result = keyword_matches('I REALLY love money', 'Bear')
     assert result == False
+
+def test_keyword_matches_lowercase_keyword():
+    result = keyword_matches('ERROR Database failed', 'database')
+    assert result == True
+
+def test_keyword_matches_uppercase_keyword():
+    result = keyword_matches('ERROR Database failed', 'DATABASE')
+    assert result == True
+
+def test_keyword_matches_mixedcase_keyword():
+    result = keyword_matches('ERROR Database failed', 'dAtaBaSE')
+    assert result == True
