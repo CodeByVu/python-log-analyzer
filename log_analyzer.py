@@ -1,3 +1,4 @@
+import argparse
 import sys
 
 
@@ -5,21 +6,21 @@ def get_log_level(line):
     log_level = line.split()[0]
     return log_level
 
+
 def keyword_matches(line, keyword):
     return keyword.lower() in line.lower()
 
+
 def main():
+    parser = argparse.ArgumentParser()
 
-    if len(sys.argv) >= 2:
-        log_filename = sys.argv[1]
-    else:
-        print('Log file not detected, please provide one')
-        sys.exit()
+    parser.add_argument('log_filename')
+    parser.add_argument('--keyword')
 
-    if len(sys.argv) >= 3:
-        keyword = sys.argv[2]
-    else:
-        keyword = None
+    args = parser.parse_args()
+
+    log_filename = args.log_filename
+    keyword = args.keyword
 
     info_count = 0
     warning_count = 0
@@ -62,7 +63,7 @@ def main():
 
     except FileNotFoundError:
         print('File not found')
-        sys.exit()
+        sys.exit(1)
 
     total_count = info_count + warning_count + error_count + debug_count + unknown_count
 
