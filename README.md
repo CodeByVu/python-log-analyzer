@@ -1,183 +1,232 @@
 # 🐍 Python Log Analyzer
 
-A beginner-friendly Python command-line utility for analyzing text-based log files.
+A Python command-line utility for analyzing text-based log files, summarizing log-level statistics, and investigating entries through keyword and severity-level filtering.
 
-This project is being built incrementally as a hands-on Python and IT learning project. The goal is to turn Python concepts into practical programming experience while building a useful tool for troubleshooting and basic log investigation.
+This project was developed incrementally as a hands-on Python and IT learning project, focusing on practical programming, troubleshooting concepts, automated testing, and version control.
 
-## ✨ Current Features
+## ✨ Features
 
-* Counts `INFO`, `WARNING`, `ERROR`, and `DEBUG` log entries
-* Identifies the log level from the beginning of each line
-* Detects and counts unrecognized log levels as `UNKNOWN`
-* Calculates the percentage of entries in each category
-* Reports the total number of entries analyzed
-* Reads the log file line by line using Python file handling
-* Skips blank lines during analysis
-* Accepts a required log filename as a command-line argument
-* Accepts an optional keyword as a command-line argument
-* Searches each line for the supplied keyword
-* Displays and numbers matching lines
-* Reports the total number of keyword matches
-* Handles missing log files with `FileNotFoundError`
-* Separates reusable logic into functions
-* Includes automated tests using `pytest`
+- Counts `DEBUG`, `INFO`, `WARNING`, `ERROR`, and `CRITICAL` log entries.
+- Identifies the log level from the first word of each line.
+- Categorizes unrecognized log levels as `UNKNOWN`.
+- Calculates the percentage of entries in each category.
+- Reports the total number of nonblank entries analyzed.
+- Reads log files line by line and skips blank lines.
+- Supports optional keyword searching using case-insensitive substring matching.
+- Supports log-level filtering through the `--level` command-line option.
+- Accepts case-insensitive log-level filter input.
+- Supports combining keyword and log-level filters.
+- Displays and numbers matching entries.
+- Reports the total number of matching entries.
+- Calculates statistics across the entire file, regardless of active filters.
+- Uses `argparse` for command-line argument handling and validation.
+- Handles missing log files with `FileNotFoundError`.
+- Includes automated tests using `pytest`.
 
-## 💻 Current Usage
+## 💻 Getting Started
 
-The program accepts the log filename as a required command-line argument and an optional keyword for searching.
+### Requirements
 
-Run it with a log file only:
+- Python 3
+- `pytest` (required for running automated tests)
 
-```bash
-python log_analyzer.py app.log
-```
+The application uses Python's standard library and does not require additional runtime packages.
 
-You can also search the log for a keyword:
+### Setup
 
-```bash
-python log_analyzer.py app.log database
-```
-
-The keyword search displays each matching line and reports the total number of matching lines.
-
-You can analyze a different log file:
+Create and activate a virtual environment:
 
 ```bash
-python log_analyzer.py test.log
+python -m venv .venv
 ```
 
-If no log filename is provided, the program displays an error message and exits.
+Activate it on Linux/macOS:
 
-If the specified log file cannot be found, the program displays an error message and exits cleanly.
+```bash
+source .venv/bin/activate
+```
 
-If no keyword is provided, the program skips the keyword search and continues with the normal log analysis.
+On Windows PowerShell:
 
-### Automated Tests
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-The project uses `pytest` to test the reusable functions.
+Install pytest:
 
-Run the test suite with:
+```bash
+python -m pip install pytest
+```
+
+## 🚀 Usage
+
+The program requires a log filename and optionally accepts a keyword, a log-level filter, or both.
+
+### Analyze a log file
+
+```bash
+python log_analyzer.py sample.log
+```
+
+Without filters, the analyzer reports statistics for the entire file without displaying individual log entries.
+
+### Search by keyword
+
+```bash
+python log_analyzer.py sample.log --keyword database
+```
+
+Keyword searches are case-insensitive. The supplied keyword can appear anywhere within a log entry.
+
+### Filter by log level
+
+```bash
+python log_analyzer.py sample.log --level ERROR
+```
+
+Supported log-level filters:
+
+- `DEBUG`
+- `INFO`
+- `WARNING`
+- `ERROR`
+- `CRITICAL`
+- `UNKNOWN`
+
+Log-level filter input is case-insensitive. For example, `--level error` works the same as `--level ERROR`.
+
+`UNKNOWN` matches entries whose first word is not one of the five recognized severity levels.
+
+### Combine keyword and log-level filters
+
+```bash
+python log_analyzer.py sample.log --keyword database --level ERROR
+```
+
+When both filters are supplied, an entry must satisfy both conditions to be displayed.
+
+Statistics continue to reflect every nonblank entry in the file, even when filters are active.
+
+## 📄 Sample Log File
+
+The following sample can be saved as `sample.log` in the project directory:
+
+```text
+INFO Application started
+DEBUG Configuration loaded
+WARNING Database response delayed
+ERROR Database connection failed
+ERROR Authentication failed
+CRITICAL System failure
+NOTICE Cache refresh completed
+```
+
+This sample includes all five recognized severity levels and an unrecognized level for testing `UNKNOWN` classification.
+
+## 📊 Example Output
+
+Running the combined filtering command:
+
+```bash
+python log_analyzer.py sample.log --keyword database --level ERROR
+```
+
+Produces:
+
+```text
+MATCH #1:
+ERROR Database connection failed
+MATCHES: 1
+DEBUG: 1
+INFO: 1
+WARNING: 1
+ERROR: 2
+CRITICAL: 1
+UNKNOWN: 1
+TOTAL: 7
+DEBUG PCT: 14.285714285714285%
+INFO PCT: 14.285714285714285%
+WARNING PCT: 14.285714285714285%
+ERROR PCT: 28.57142857142857%
+CRITICAL PCT: 14.285714285714285%
+UNKNOWN PCT: 14.285714285714285%
+```
+
+Only entries satisfying both filters are displayed, while statistics cover the entire file.
+
+## 🧪 Automated Tests
+
+The project uses `pytest` to verify individual functions, command-line argument handling, filtering behavior, error handling, and statistics.
+
+Run the complete test suite with:
 
 ```bash
 python -m pytest
 ```
 
-### Example Output
+The V2 test suite contains 18 automated tests.
 
-```text
-INFO: 3
-WARNING: 2
-ERROR: 3
-DEBUG: 1
-UNKNOWN: 1
-TOTAL: 10
-INFO PCT: 30.0%
-WARNING PCT: 20.0%
-ERROR PCT: 30.0%
-DEBUG PCT: 10.0%
-UNKNOWN PCT: 10.0%
-```
+## ⚠️ Current Limitations
 
-When a keyword is provided and matches are found:
+The analyzer intentionally uses a simple text-based log format.
 
-```text
-MATCH #1:
-Database connection failed
+- The log level must be the first word of each nonblank line.
+- Recognized log levels in the file must use uppercase names: `DEBUG`, `INFO`, `WARNING`, `ERROR`, and `CRITICAL`.
+- Other first-word values are categorized as `UNKNOWN`.
+- Keyword searches use case-insensitive substring matching, so a keyword may match part of a larger word.
+- The analyzer is designed for basic text-based log investigation rather than structured log formats or production monitoring.
+- Missing files are explicitly handled; other file-related errors are not currently handled separately.
 
-MATCH #2:
-Database response time exceeded
-
-KEYWORD MATCHES: 2
-```
-
-When a keyword is provided but no matches are found:
-
-```text
-KEYWORD MATCHES: 0
-```
-
-## 🚧 Current Limitations
-
-The project intentionally keeps the log format and analysis logic simple.
-
-At the moment:
-
-* The analyzer expects the log level to be the first word on each line
-* Only the log levels `INFO`, `WARNING`, `ERROR`, and `DEBUG` are recognized automatically
-* Other log levels are categorized as `UNKNOWN`
-* Keyword searches use a simple case-sensitive substring search, so the keyword can match part of a larger word
-* Only missing files are explicitly handled; other file-related errors are not currently handled separately
-
-These limitations leave room for future experimentation without making the current project unnecessarily complex.
+These limitations leave room for future improvements without unnecessarily complicating the current implementation.
 
 ## 🛠️ Technologies
 
-* Python
-* pytest
-* Git
-* GitHub
-* GitHub Codespaces
-* VS Code
+- Python
+- `argparse`
+- `pytest`
+- Git
+- GitHub
+- GitHub Codespaces
+- Visual Studio Code
+
+## 📚 Version History
+
+### V2
+
+- Added command-line argument parsing using `argparse`.
+- Added case-insensitive keyword searching.
+- Added log-level filtering with case-insensitive command-line input.
+- Added `CRITICAL` log-level classification and statistics.
+- Added filtering for unrecognized (`UNKNOWN`) log entries.
+- Added support for combining keyword and log-level filters.
+- Updated match counting and reporting.
+- Expanded automated test coverage to 18 tests.
+
+### V1
+
+- Implemented the initial command-line log analyzer.
+- Added log-level counting and percentage reporting.
+- Added keyword searching and match reporting.
+- Implemented line-by-line file processing and blank-line skipping.
+- Added missing-file error handling.
+- Introduced reusable functions and automated tests.
 
 ## 🎯 Project Goals
 
-The core project is now complete as a focused Python learning project.
+This project focuses on developing practical Python skills through incremental development.
 
-Possible future enhancements include:
+Areas of experience include:
 
-* Supporting additional log formats
-* More detailed statistics and summaries
-* More advanced filtering and searching
-* JSON output
-* Improved command-line argument handling
-* More extensive automated testing
+- File handling and text processing.
+- Conditional logic, loops, and functions.
+- Command-line interfaces and argument validation.
+- Exception handling.
+- Boolean logic and filtering.
+- Automated testing and debugging.
+- Git version control and incremental development.
 
-These are optional future improvements rather than requirements for the current project.
+Future enhancements may explore additional log formats, output customization, and more advanced analysis capabilities.
 
-## 📚 Learning Focus
+---
 
-This project was developed as a practical way to learn Python programming, debugging, testing, and problem-solving.
-
-Concepts practiced include:
-
-* Variables and counters
-* Conditional statements
-* `if` / `elif` / `else`
-* Nested `if` statements
-* `for` loops
-* String methods
-* Lists and indexing
-* File handling
-* `with open()`
-* f-strings
-* `None` and optional values
-* Command-line arguments with `sys.argv`
-* `try` / `except`
-* `FileNotFoundError`
-* Functions with `def`
-* Parameters and arguments
-* Return values
-* Variable scope
-* Function calls
-* Imports and modules
-* `__name__ == '__main__'`
-* Basic automated testing with `pytest`
-* Assertions with `assert`
-* Expected exceptions with `pytest.raises()`
-* Git version control
-* Git staging and reviewing changes
-
-The project was intentionally built through small iterations rather than being designed as a large application from the beginning.
-
-> [!NOTE]
-> This project is primarily a learning exercise. The emphasis is on understanding the code, practicing problem-solving, debugging mistakes, and developing good development habits rather than simply producing a finished application.
-
-## 📌 Project Status
-
-✅ **Core project complete**
-
-The analyzer accepts a log filename from the command line and optionally accepts a keyword to search for. It performs log-level analysis, counts recognized and unknown entries, calculates percentages, handles missing log files, and reports keyword matches.
-
-The project also includes a small `pytest` test suite covering the reusable functions and expected error behavior.
-
-The current implementation is intentionally simple and provides a foundation for future Python and IT-focused projects.
+**Project Status: V2 feature set complete.**
