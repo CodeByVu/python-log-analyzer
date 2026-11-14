@@ -1,0 +1,8 @@
+INFO Application started
+DEBUG Configuration loaded
+WARNING Database response delayed
+ERROR Database connection failed
+
+ERROR Authentication failed
+CRITICAL System failure
+NOTICE Cache refresh completed
